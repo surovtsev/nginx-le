@@ -3,7 +3,7 @@
 # scripts is trying to renew certificate only if close (30 days) to expiration
 # returns 0 only if certbot called.
 
-target_cert=/etc/nginx/ssl/le-crt.pem
+target_cert=/etc/nginx/ssl/cert.crt
 # 30 days
 renew_before=2592000
 
@@ -38,7 +38,7 @@ if [ ${le_result} -ne 0 ]; then
 fi
 
 FIRST_FQDN=$(echo "$LE_FQDN" | cut -d"," -f1)
-cp -fv /etc/letsencrypt/live/${FIRST_FQDN}/privkey.pem /etc/nginx/ssl/le-key.pem
+cp -fv /etc/letsencrypt/live/${FIRST_FQDN}/privkey.pem /etc/nginx/ssl/private.key
 cp -fv /etc/letsencrypt/live/${FIRST_FQDN}/fullchain.pem ${target_cert}
 cp -fv /etc/letsencrypt/live/${FIRST_FQDN}/chain.pem /etc/nginx/ssl/le-chain-crt.pem
 return 0
