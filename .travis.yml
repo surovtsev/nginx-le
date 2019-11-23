@@ -1,0 +1,12 @@
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t nginx-le .
+        - docker images
+        - docker tag nginx-le $DOCKER_USERNAME/nginx-le
+        - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+        - docker push $DOCKER_USERNAME/nginx-le:$TAG
